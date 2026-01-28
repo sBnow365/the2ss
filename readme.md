@@ -24,7 +24,7 @@ Experience Roadmap Agent
 Interactive Map + Travel Dossier
 
 # 🧬 LangGraph State (Clean & Scalable)
-```bash
+
     class TravelState(TypedDict):
     image: str
     landmark: dict
