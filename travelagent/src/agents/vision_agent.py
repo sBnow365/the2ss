@@ -12,48 +12,61 @@ class VisionAgent:
         image_file = genai.upload_file(image_path)
 
         prompt = """
-You are a vision analysis agent.
+            You are a vision analysis agent.
 
-STRICT OUTPUT RULES:
-- Return ONLY valid JSON.
-- Do NOT wrap the response in markdown.
-- Do NOT include ``` or ```json.
-- Do NOT include explanations
-- Do NOT use markdown
+            STRICT OUTPUT RULES:
+            - Return ONLY valid JSON.
+            - Do NOT wrap the response in markdown.
+            - Do NOT include ``` or ```json.
+            - Do NOT include explanations
+            - Do NOT use markdown
 
-Required JSON schema:
-{
-  "landmark": "",
-  "location_hint": "",
-  "scene_type": [],
-  "confidence": 0.0,
-  "visual_tags": []
-}
+            Required JSON schema:
+            {
+            "landmark": "",
+            "location_hint": "",
+            "scene_type": [],
+            "confidence": 0.0,
+            "visual_tags": []
+            }
 
-"""
+            """
 
-        response = self.model.generate_content([prompt, image_file])
-       # print(response.text)
+# Inside your analyze method:
+        response = self.model.generate_content(
+            [prompt, image_file],
+            # This tells the API to force a JSON structure and skip the markdown
+            generation_config={"response_mime_type": "application/json"}
+        )       # print(response.text)
         raw = response.text
         print("----- RAW MODEL OUTPUT START -----")
         print(raw)
         print("----- RAW MODEL OUTPUT END -----")
         return self._parse_response(response.text)
+    
+    def _parse_response(self, text: str) -> dict:
+            """
+            Cleans the model output and converts it to a dictionary.
+            Handles markdown blocks, whitespace, and empty responses.
+            """
+            if not text:
+                raise ValueError("The model returned an empty response.")
 
-def _parse_response(self, text: str) -> dict:
-    """
-    Robustly extract JSON from LLM output.
-    Handles markdown fences, extra text, and whitespace.
-    """
-    try:
-        # Remove markdown code fences if present
-        text = re.sub(r"```(?:json)?", "", text)
-        text = text.replace("```", "").strip()
+            # 1. Try to find JSON content between triple backticks
+            # This looks for ```json {data} ``` or just ``` {data} ```
+            match = re.search(r"```(?:json)?\s*(\{.*?\})\s*```", text, re.DOTALL)
+            
+            if match:
+                cleaned_text = match.group(1)
+            else:
+                # 2. If no backticks, just strip whitespace and hope for raw JSON
+                cleaned_text = text.strip()
 
-        # Extract JSON object
-        json_str = re.search(r"\{.*\}", text, re.DOTALL).group()
-
-        return json.loads(json_str)
-
-    except Exception as e:
-        raise ValueError(f"Invalid JSON returned:\n{text}") from e
+            try:
+                return json.loads(cleaned_text)
+            except json.JSONDecodeError as e:
+                # 3. Last resort: If it still fails, show exactly what we tried to parse
+                print("----- DEBUG: FAILED TO PARSE -----")
+                print(f"CLEANED TEXT: {cleaned_text}")
+                print("----------------------------------")
+                raise ValueError(f"JSON parsing failed at {e.pos}. Check the debug output above.")
