@@ -27,7 +27,9 @@ class VisionAgent:
             "location_hint": "",
             "scene_type": [],
             "confidence": 0.0,
-            "visual_tags": []
+            "visual_tags": [],
+            "nearby hotels":[],
+            "nearby places to visit":[]
             }
 
             """
