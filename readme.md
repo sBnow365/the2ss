@@ -61,8 +61,7 @@ Roadmap Synthesis
 # 🌍 AI Landmark Intelligence & Travel Planner
 
 ## Overview
-An agentic AI system that transforms a single image into a complete,
-context-aware, preference-driven travel guide.
+An agentic AI system that takes a single travel image as input and generates a complete, context-aware, preference-driven travel guide by combining vision-based landmark recognition, real-time context, cultural intelligence, and multi-agent planning.
 
 ## Key Capabilities
 - Landmark recognition from images
