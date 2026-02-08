@@ -23,15 +23,12 @@ class VisionAgent:
 
             Required JSON schema:
             {
-            "landmark": "",
-            "location_hint": "",
-            "scene_type": [],
-            "confidence": 0.0,
-            "visual_tags": [],
-            "nearby hotels":[],
-            "nearby places to visit":[]
+                "place_type": "",
+                "name": "",
+                "city": "",
+                "country": ""
+                "confidence": 0.0
             }
-
             """
 
 # Inside your analyze method:
