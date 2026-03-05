@@ -1,5 +1,6 @@
 import google.generativeai as genai
 from src.config.settings import GEMINI_API_KEY
+from src.utils.async_utils import run_blocking
 import json
 import re
 
@@ -8,7 +9,7 @@ class VisionAgent:
         genai.configure(api_key=GEMINI_API_KEY)
         self.model = genai.GenerativeModel("models/gemini-2.5-flash")
 
-    def analyze(self, image_path: str) -> dict:
+    async def analyze(self, image_path: str) -> dict:
         image_file = genai.upload_file(image_path)
 
         prompt = """
@@ -32,15 +33,15 @@ class VisionAgent:
             """
 
 # Inside your analyze method:
-        response = self.model.generate_content(
+        response = await run_blocking(self.model.generate_content,
             [prompt, image_file],
             # This tells the API to force a JSON structure and skip the markdown
             generation_config={"response_mime_type": "application/json"}
         )       # print(response.text)
         raw = response.text
-        print("----- RAW MODEL OUTPUT START -----")
-        print(raw)
-        print("----- RAW MODEL OUTPUT END -----")
+        # print("----- RAW MODEL OUTPUT START -----")
+        # print(raw)
+        # print("----- RAW MODEL OUTPUT END -----")
         return self._parse_response(response.text)
     
     def _parse_response(self, text: str) -> dict:
