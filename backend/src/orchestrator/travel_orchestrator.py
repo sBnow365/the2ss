@@ -39,3 +39,28 @@ class TravelOrchestrator:
             "culture": culture,
             "travel":travel
         }
+    # async def followup(self, tab: str, question: str):
+
+    #     place_context = self.session_context["place_context"]
+
+    #     if tab == "culture":
+    #         return await self.culture_agent.followup(
+    #             question,
+    #             place_context,
+    #             self.session_context["culture"]
+    #         )
+
+    #     if tab == "geo":
+    #         return await self.geo_agent.followup(
+    #             question,
+    #             place_context,
+    #             self.session_context["geo"]
+    #         )
+
+    #     if tab == "travel":
+    #         return await self.travel_agent.followup(
+    #             question,
+    #             place_context,
+    #             self.session_context["travel"]
+    #         )
+            
