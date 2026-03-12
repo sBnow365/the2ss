@@ -4,6 +4,7 @@ import LocationButton from "./components/LocationButton"
 import Section from "./components/Section"
 import BulletList from "./components/BulletList"
 import CardGrid from "./components/CardGrid"
+import TravelCard from "./components/TravelCard";
 
 function App() {
   const [file, setFile] = useState(null);
@@ -109,26 +110,32 @@ function App() {
     </div>
 
   )}
-{/* {activeTab === "travel" && data.travel && (
+      {activeTab === "travel" && data.travel && (
 
-    <div>
+        <div>
 
-      <Section title="Distance">
-        <BulletList items={data.geo.distance} />
-      </Section>
-      <Section title="Ways to reach">
-        <BulletList items={data.travel.suggested_transport} />
-      </Section>
-      <Section title="Helpful Information">
-        <BulletList items={data.travel.tips} />
-      </Section>
+          <Section title="Distance">
+            <p>{data.travel.distance_km}</p>
+          </Section>
 
-    </div>
+          <Section title="Transport Options">
+            <div style={{ display: "flex", gap: "15px", flexWrap: "wrap" }}>
+              {data.travel.transport_options?.map((option, index) => (
+                <TravelCard key={index} option={option} />
+              ))}
+            </div>
+          </Section>
 
-  )} */}
-            {activeTab === "travel" && (
+          <Section title="Travel Tips">
+            <BulletList items={data.travel.tips} />
+          </Section>
+
+        </div>
+
+      )}
+            {/* {activeTab === "travel" && (
               <pre>{JSON.stringify(data.travel, null, 2)}</pre>
-            )}
+            )} */}
 
           </div>
         )}
