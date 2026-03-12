@@ -16,5 +16,6 @@ async def analyze_image(
     result = await orchestrator.process_image(image,
                                               user_location={"lat":lat,"lon":lon}
                                               )
+    print(result)
 
     return result

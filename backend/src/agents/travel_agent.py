@@ -36,94 +36,71 @@ class TravelAgent:
     - Longitude: {user_location.get("lon")}
 
     STRICT OUTPUT RULES
-    - Return ONLY valid JSON
-    - Do NOT include explanations
-    - Do NOT include markdown
-    - Do NOT wrap output in ``` or ```json
-    - ALL keys must appear even if estimates are required
+    - Return ONLY Markdown following the exact structure below
+    - Do NOT include explanations before or after the structure
+    - Do NOT add extra sections
+    - Keep steps short and actionable
+    - Provide 2–3 transport options if possible
 
     Budget levels must be one of: Low, Medium, High.
 
-    Steps should be short travel actions such as:
+    Travel steps should be short actions such as:
     "Take metro to airport"
     "Fly Delhi → Athens"
     "Taxi to destination"
 
-    Required JSON schema:
+    Required Markdown schema:
 
-    {{
-    "distance_km": "distance between user location and destination in kilometres",
+    ## Distance
+    - <distance between user location and destination in kilometres>
 
-    "transport_options": [
-        {{
-        "budget_level": "",
-        "approx_cost_usd": "",
-        "method": "",
-        "timeline": "",
-        "steps": [""]
-        }}
-    ],
+    ## Transport Options
 
-    "tips": ["short bullet points"]
-    }}
+    ### Option 1
+    - **Budget Level:** <Low / Medium / High>
+    - **Approx Cost (USD):** <estimated cost>
+    - **Method:** <flight / train / bus / mixed transport>
+    - **Timeline:** <total travel time>
 
-    Provide 2–3 transport options if possible.
+    **Steps**
+    - step
+    - step
+    - step
+
+    ### Option 2
+    - **Budget Level:** <Low / Medium / High>
+    - **Approx Cost (USD):** <estimated cost>
+    - **Method:** <transport method>
+    - **Timeline:** <total travel time>
+
+    **Steps**
+    - step
+    - step
+    - step
+
+    ### Option 3
+    - **Budget Level:** <Low / Medium / High>
+    - **Approx Cost (USD):** <estimated cost>
+    - **Method:** <transport method>
+    - **Timeline:** <total travel time>
+
+    **Steps**
+    - step
+    - step
+    - step
+
+    ## Travel Tips
+    - short tip
+    - short tip
+    - short tip
     """
         response = await run_blocking(
             self.model.generate_content,
-            prompt,
-            generation_config={"response_mime_type": "application/json"}
+            prompt
         )
         raw = response.text
         # print("----- RAW CULTURAL MODEL OUTPUT START -----")
         # print(raw)
         # print("----- RAW CULTURAL MODEL OUTPUT END -----")
 
-        return self._parse_response(raw)
-    
-    def _parse_response(self, text: str) -> dict:
-        if not text:
-            raise ValueError("The model returned an empty response.")
-
-        match = re.search(r"```(?:json)?\s*(\{[\s\S]*\})\s*```", text)
-
-        if match:
-            cleaned_text = match.group(1)
-        else:
-            cleaned_text = text.strip()
-
-        try:
-            parsed = json.loads(cleaned_text)
-        except json.JSONDecodeError as e:
-            print("----- DEBUG: FAILED TO PARSE TRAVEL JSON -----")
-            print(cleaned_text)
-            print("----------------------------------------------")
-            raise ValueError(f"JSON parsing failed at position {e.pos}")
-
-        required_keys = [
-            "distance_km",
-            "transport_options",
-            "tips"
-        ]
-
-        for key in required_keys:
-            if key not in parsed:
-                raise ValueError(f"Missing key in TravelAgent output: {key}")
-
-        for option in parsed.get("transport_options", []):
-            required_transport_keys = [
-                "budget_level",
-                "approx_cost_usd",
-                "method",
-                "timeline",
-                "steps"
-            ]
-
-            for key in required_transport_keys:
-                if key not in option:
-                    raise ValueError(f"Missing key in transport option: {key}")
-
-            if isinstance(option.get("steps"), str):
-                option["steps"] = [option["steps"]]
-
-        return parsed
+        return raw
