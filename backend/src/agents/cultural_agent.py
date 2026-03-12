@@ -1,5 +1,6 @@
 import google.generativeai as genai
 from src.config.settings import GEMINI_API_KEY
+from src.utils.async_utils import run_blocking
 import json
 import re
 
@@ -9,7 +10,7 @@ class CulturalAgent:
         genai.configure(api_key=GEMINI_API_KEY)
         self.model = genai.GenerativeModel("models/gemini-2.5-flash")
 
-    def analyze(self, place_context: dict) -> dict:
+    async def analyze(self, place_context: dict) -> dict:
         """
         place_context example:
         {
@@ -55,15 +56,17 @@ Required JSON schema:
 }}
 """
 
-        response = self.model.generate_content(
+        response = await run_blocking(
+            self.model.generate_content,
             prompt,
             generation_config={"response_mime_type": "application/json"}
         )
+        
 
         raw = response.text
-        print("----- RAW CULTURAL MODEL OUTPUT START -----")
-        print(raw)
-        print("----- RAW CULTURAL MODEL OUTPUT END -----")
+        # print("----- RAW CULTURAL MODEL OUTPUT START -----")
+        # print(raw)
+        # print("----- RAW CULTURAL MODEL OUTPUT END -----")
 
         return self._parse_response(raw)
 
