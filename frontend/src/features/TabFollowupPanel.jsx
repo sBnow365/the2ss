@@ -13,7 +13,7 @@ export default function TabFollowupPanel({ sessionId, tab }) {
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [history]);
-
+  // console.log(history);
   return (
     <div style={{ marginTop: 30 }}>
 
@@ -26,9 +26,9 @@ export default function TabFollowupPanel({ sessionId, tab }) {
           flexDirection: "column",
           gap: 12,
           padding: 10,
-          border: "1px solid #eee",
+          border: "1px solid #000000",
           borderRadius: 8,
-          background: "#fafafa"
+          background: "#262626"
         }}
       >
 
@@ -54,7 +54,7 @@ export default function TabFollowupPanel({ sessionId, tab }) {
             <div
               style={{
                 alignSelf: "flex-start",
-                background: "#f1f1f1",
+                background: "#262626",
                 padding: "10px 14px",
                 borderRadius: 12,
                 maxWidth: "70%"

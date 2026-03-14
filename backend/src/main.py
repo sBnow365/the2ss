@@ -15,11 +15,13 @@
 from fastapi import FastAPI
 from src.routes import analyze
 from src.routes.followup import router as followup_router
+from src.routes.news import router as news_router  
 from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 
 app.include_router(analyze.router)
 app.include_router(followup_router, prefix="/api")
+app.include_router(news_router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173"],  # Later restrict
