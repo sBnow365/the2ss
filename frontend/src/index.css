@@ -71,5 +71,6 @@ button:focus-visible {
 .markdown-body h1, .markdown-body h2 { margin-top: 24px; margin-bottom: 16px; font-weight: 600; }
 .markdown-body p { margin-bottom: 16px; }
 .markdown-body ul, .markdown-body ol { padding-left: 2em; margin-bottom: 16px; }
-.markdown-body code { background: #f4f4f4; padding: 2px 4px; border-radius: 4px; font-family: monospace; }
-.markdown-body pre { background: #f4f4f4; padding: 16px; overflow: auto; border-radius: 8px; }
+.markdown-body code { background: #262626; padding: 2px 4px; border-radius: 4px; font-family: monospace; }
+.markdown-body pre { background: #262626; padding: 16px; overflow: auto; border-radius: 8px; }
+.markdown-body {background:#262626}

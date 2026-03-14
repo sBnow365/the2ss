@@ -6,7 +6,7 @@ export default function SimpleMarkdown({ content }) {
     container: {
       lineHeight: '1.6',
       fontFamily: 'sans-serif',
-      color: '#222',
+      color: '#ffffff',
       maxWidth: '800px',
       margin: '20px auto',
       padding: '0 20px'

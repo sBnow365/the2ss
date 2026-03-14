@@ -4,11 +4,13 @@ import axios from "axios";
 import LocationButton from "./components/LocationButton";
 import SimpleMarkdown from "./components/SimpleMarkdown";
 import TabFollowupPanel from "./features/TabFollowupPanel";
+import NewsTab from "./components/NewsTab";
 
 function App() {
 
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(null);
+
 
   const [data, setData] = useState(null);
   const [location, setLocation] = useState(null);
@@ -66,7 +68,7 @@ function App() {
 
     }
   };
-
+  console.log("ACTIVE TAB:", activeTab);
   return (
     <div
       style={{
@@ -119,7 +121,7 @@ function App() {
 
       <div style={{ display: "flex", gap: 10, marginBottom: 20 }}>
 
-        {["culture", "geo", "travel"].map((tab) => (
+        {["culture", "geo", "travel","news"].map((tab) => (
 
           <button
             key={tab}
@@ -144,27 +146,33 @@ function App() {
 
       {data && (
 
-        <div
-          style={{
-            border: "1px solid #eee",
-            padding: 20,
-            borderRadius: 8,
-            background: "#fff"
-          }}
-        >
+    <div
+      style={{
+        border: "1px solid #000000",
+        padding: 20,
+        borderRadius: 8,
+        background: "#262626"
+      }}
+    >
 
-          <SimpleMarkdown content={data[activeTab]} />
+          {activeTab === "news" ? (
+            <NewsTab placeContext={data.place} />
+          ) : (
+            <>
+              <SimpleMarkdown content={data[activeTab]} />
 
-          {sessionId && (
-            <TabFollowupPanel
-              sessionId={sessionId}
-              tab={activeTab}
-            />
+              {sessionId && (
+                <TabFollowupPanel
+                  sessionId={sessionId}
+                  tab={activeTab}
+                />
+              )}
+            </>
           )}
 
-        </div>
+    </div>
 
-      )}
+  )}
 
       {/* Location */}
 
