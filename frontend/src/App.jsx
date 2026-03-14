@@ -1,74 +1,73 @@
 import { useState } from "react";
 import axios from "axios";
-
+ 
 import LocationButton from "./components/LocationButton";
 import SimpleMarkdown from "./components/SimpleMarkdown";
 import TabFollowupPanel from "./features/TabFollowupPanel";
 import NewsTab from "./components/NewsTab";
-
+ 
 function App() {
-
+ 
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(null);
-
-
+ 
   const [data, setData] = useState(null);
   const [location, setLocation] = useState(null);
-
+ 
   const [activeTab, setActiveTab] = useState("culture");
   const [loading, setLoading] = useState(false);
-
+ 
   const [sessionId, setSessionId] = useState(null);
-
+ 
   const handleFileChange = (e) => {
     const f = e.target.files[0];
     setFile(f);
     setPreview(URL.createObjectURL(f));
   };
-
+ 
   const handleUpload = async () => {
-
+ 
     if (!file) {
       alert("Please select an image first");
       return;
     }
-
+ 
     setLoading(true);
     setData(null);
-
+ 
     const formData = new FormData();
     formData.append("file", file);
-
+ 
     if (location) {
       formData.append("lat", location.lat);
       formData.append("lon", location.lon);
     }
-
+ 
     try {
-
+ 
       const res = await axios.post(
         "http://127.0.0.1:8000/analyze",
         formData
       );
-
+ 
       setData(res.data);
-
+ 
       if (res.data.session_id) {
         setSessionId(res.data.session_id);
       }
-
+ 
     } catch (err) {
-
+ 
       console.error(err);
       alert("Analysis failed");
-
+ 
     } finally {
-
+ 
       setLoading(false);
-
+ 
     }
   };
-  console.log("ACTIVE TAB:", activeTab);
+ 
   return (
     <div
       style={{
@@ -78,11 +77,10 @@ function App() {
         fontFamily: "sans-serif"
       }}
     >
-
+ 
       <h1>🌍 AI Travel Explorer</h1>
-
+ 
       {/* Upload Section */}
-
       <div
         style={{
           marginBottom: 20,
@@ -91,11 +89,10 @@ function App() {
           borderRadius: 8
         }}
       >
-
         <input type="file" onChange={handleFileChange} />
-
+ 
         <LocationButton setLocation={setLocation} />
-
+ 
         <button
           onClick={handleUpload}
           disabled={loading}
@@ -103,11 +100,9 @@ function App() {
         >
           {loading ? "Analyzing..." : "Analyze Image"}
         </button>
-
       </div>
-
+ 
       {/* Image Preview */}
-
       {preview && (
         <img
           src={preview}
@@ -116,13 +111,10 @@ function App() {
           style={{ borderRadius: 8, marginBottom: 20 }}
         />
       )}
-
+ 
       {/* Tabs */}
-
       <div style={{ display: "flex", gap: 10, marginBottom: 20 }}>
-
-        {["culture", "geo", "travel","news"].map((tab) => (
-
+        {["culture", "geo", "travel", "news"].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
@@ -137,53 +129,47 @@ function App() {
           >
             {tab.toUpperCase()}
           </button>
-
         ))}
-
       </div>
-
-      {/* Tab Content */}
-
+ 
+      {/* Tab Content — all panels always mounted to preserve followup state */}
       {data && (
-
-    <div
-      style={{
-        border: "1px solid #000000",
-        padding: 20,
-        borderRadius: 8,
-        background: "#262626"
-      }}
-    >
-
-          {activeTab === "news" ? (
+        <div
+          style={{
+            border: "1px solid #000000",
+            padding: 20,
+            borderRadius: 8,
+            background: "#262626"
+          }}
+        >
+ 
+          {/* NEWS tab — always mounted, toggled via display */}
+          <div style={{ display: activeTab === "news" ? "block" : "none" }}>
             <NewsTab placeContext={data.place} />
-          ) : (
-            <>
-              <SimpleMarkdown content={data[activeTab]} />
-
+          </div>
+ 
+          {/* CULTURE / GEO / TRAVEL tabs — always mounted, toggled via display */}
+          {["culture", "geo", "travel"].map((tab) => (
+            <div key={tab} style={{ display: activeTab === tab ? "block" : "none" }}>
+              <SimpleMarkdown content={data[tab]} />
               {sessionId && (
-                <TabFollowupPanel
-                  sessionId={sessionId}
-                  tab={activeTab}
-                />
+                <TabFollowupPanel sessionId={sessionId} tab={tab} />
               )}
-            </>
-          )}
-
-    </div>
-
-  )}
-
+            </div>
+          ))}
+ 
+        </div>
+      )}
+ 
       {/* Location */}
-
       {location && (
         <p style={{ fontSize: 12, color: "#666" }}>
           📍 Search Origin: {location.lat}, {location.lon}
         </p>
       )}
-
+ 
     </div>
   );
 }
-
+ 
 export default App;
