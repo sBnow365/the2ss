@@ -5,7 +5,6 @@ export function useFollowup(sessionId, tab) {
 
   const [loading, setLoading] = useState(false);
 
-  // store history per tab
   const [historyMap, setHistoryMap] = useState({
     culture: [],
     geo: [],
@@ -21,17 +20,17 @@ export function useFollowup(sessionId, tab) {
 
     try {
 
-      const res = await askFollowup(sessionId, tab, question);
+      // send previous history + new question
+      const res = await askFollowup(sessionId, tab, question, history);
+
+      const newEntry = {
+        question,
+        answer: res.answer
+      };
 
       setHistoryMap(prev => ({
         ...prev,
-        [tab]: [
-          ...prev[tab],
-          {
-            question,
-            answer: res.answer
-          }
-        ]
+        [tab]: [...prev[tab], newEntry]
       }));
 
     } finally {

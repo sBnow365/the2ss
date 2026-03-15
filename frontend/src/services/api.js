@@ -16,7 +16,8 @@ export async function analyzeImage(imageFile, location) {
   return res.json();
 }
 
-export async function askFollowup(sessionId, tab, question) {
+
+export async function askFollowup(sessionId, tab, question, history) {
 
   const res = await fetch(`${API_BASE}/followup`, {
     method: "POST",
@@ -26,7 +27,8 @@ export async function askFollowup(sessionId, tab, question) {
     body: JSON.stringify({
       session_id: sessionId,
       tab,
-      question
+      question,
+      history
     })
   });
 
