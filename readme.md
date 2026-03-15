@@ -1,101 +1,136 @@
-# hello
-'''python
-    User Image
-   ↓
-Landmark Vision Agent
-   ↓
-Geo Intelligence Agent
-   ↓
-Context Enrichment Layer
-   ├── Weather Agent
-   ├── Culture & Etiquette Agent
-   ├── Safety & Advisory Agent
-   ├── Connectivity Agent
-   ↓
-Preference-Aware Planning Layer
-   ├── Accommodation Agent
-   ├── Food & Lifestyle Agent
-   ├── Transport Agent
-   ↓
-Route & Optimization Agent
-   ↓
-Experience Roadmap Agent
-   ↓
-Interactive Map + Travel Dossier
+I've analyzed your project structure—looks like a sophisticated Multi-Agent AI system with a React frontend and a Python/FastAPI backend. No shame needed; here is a high-caliber, industry-standard `README.md` that highlights the architectural complexity of your agents and orchestrators.
 
-# 🧬 LangGraph State (Clean & Scalable)
+```markdown
+# AI Multi-Agent Intelligence System
 
-    class TravelState(TypedDict):
-    image: str
-    landmark: dict
-    geo: dict
-    weather: dict
-    culture: dict
-    connectivity: dict
-    preferences: dict
-    accommodations: list
-    attractions: list
-    routes: dict
-    roadmap: str
-    map_data: dict
+A robust, full-stack application featuring a specialized multi-agent backend architecture and a responsive React-based intelligence dashboard. The system utilizes dedicated agents for vision, travel, news, and cultural analysis, coordinated through a central orchestration layer.
 
+---
 
-# 🔁 LangGraph Control Flow
+## 🏗 Project Architecture
 
- Vision
-  ↓
-Geo
-  ↓
- ┌───────────────┬───────────────┬───────────────┐
-Weather        Culture        Connectivity
- └───────────────┴───────────────┴───────────────┘
-          ↓
-Preference-Based Filtering
-          ↓
-Routes & Optimization
-          ↓
-Roadmap Synthesis
+### Backend (Python/FastAPI)
+The backend follows a modular **Agent-Orchestrator** pattern:
+* **Agents (`src/agents/`):** Independent modules for specific logic (Vision, Geo, News, Cultural, etc.).
+* **Orchestrator (`src/orchestrator/`):** Manages the flow between multiple agents to fulfill complex follow-up queries.
+* **API Layer (`src/api/`):** Clean routing using FastAPI to expose agent capabilities.
+* **Utils:** Specialized handlers for async operations, chat history persistence, and file processing.
 
+### Frontend (React/Vite)
+A modern, component-driven UI:
+* **Features:** Specialized panels like `TabFollowupPanel` for multi-turn interactions.
+* **Hooks:** Custom hooks (`useFollowup`, `useTabImages`) for state management and API abstraction.
+* **Services:** Centralized API client for backend communication.
 
+---
 
-# 🌍 AI Landmark Intelligence & Travel Planner
+## 🛠 Tech Stack
 
-## Overview
-An agentic AI system that takes a single travel image as input and generates a complete, context-aware, preference-driven travel guide by combining vision-based landmark recognition, real-time context, cultural intelligence, and multi-agent planning.
+| Layer        | Technologies |
+|--------------|--------------|
+| **Frontend** | React, Vite, Tailwind CSS, Markdown Rendering |
+| **Backend** | Python, FastAPI, Pydantic |
+| **AI/ML** | Multi-Agent Systems, Orchestration Logic |
+| **Storage** | Context & Chat History Stores |
 
-## Key Capabilities
-- Landmark recognition from images
-- Weather-aware planning
-- Cultural intelligence
-- Preference-based accommodation
-- Optimized routing
-- Interactive travel roadmap
+---
 
-## Architecture
-Multi-agent orchestration using LangGraph with tool-augmented reasoning.
+## 🚀 Getting Started
 
-## Agent Pipeline
-Vision → Geo → Context → Preferences → Optimization → Roadmap
+### Prerequisites
+* Python 3.9+
+* Node.js 18+
+* NPM 
 
-## Sample Output
-- Landmark: Eiffel Tower
-- Best Time to Visit: Morning (low crowd)
-- Weather Advisory: Light rain expected
-- Culture Tip: Greet before interaction
-- Connectivity: Excellent public transport
+### Backend Setup
+1. Navigate to the backend directory:
+   ```bash
+   cd backend
 
-## Interactive Map
-Generated as `map.html`
+```
 
-## Tech Stack
-- Python
-- LangGraph
-- LangChain
-- Vision LLM
-- Mapping APIs
-- Folium
-
-## How to Run
+2. Write this :
 ```bash
 pip install -r requirements.txt
-python main.py --image sample.jpg
+
+```
+
+
+
+
+4. Configure environment variables in `.env`.
+```bash
+
+```
+
+5. Start the server:
+```bash
+uvicorn src.main:app --reload
+
+```
+
+
+
+### Frontend Setup
+
+1. Navigate to the frontend directory:
+```bash
+cd frontend
+
+```
+
+
+2. Install dependencies:
+```bash
+npm install
+
+```
+
+
+3. Start the development server:
+```bash
+npm run dev
+
+```
+
+
+
+---
+
+## 📂 Key Directory Structure
+
+```text
+├── backend/
+│   ├── src/
+│   │   ├── agents/        # Specialized AI logic (Travel, News, Vision)
+│   │   ├── api/           # Fast API Routes
+│   │   ├── orchestrator/  # Multi-agent coordination logic
+│   │   └── utils/         # Async & Storage helpers
+├── frontend/
+│   ├── src/
+│   │   ├── components/    # Reusable UI elements (Chat, Input, Cards)
+│   │   ├── features/      # Complex business logic modules
+│   │   ├── hooks/         # Custom React hooks
+│   │   └── services/      # API integration
+
+```
+
+---
+
+## 🧪 Testing & Quality
+
+* **Linting:** ESLint is configured for frontend code quality.
+* **Type Safety:** Pydantic models are used in the backend for request/response validation.
+* **Agents:** Each agent is designed for unit-testing isolation.
+
+---
+
+## 📝 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+```
+
+Would you like me to help you write specific **Unit Tests** for your `followup_orchestrator.py` to ensure your agents are communicating correctly?
+
+```
