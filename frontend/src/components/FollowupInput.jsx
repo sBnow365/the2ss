@@ -5,10 +5,18 @@ export default function FollowupInput({ onAsk, loading }) {
   const [question, setQuestion] = useState("");
 
   const submit = () => {
-    if (!question.trim()) return;
+    const q = question.trim();
+    if (!q || loading) return;
 
-    onAsk(question);
+    onAsk(q);
     setQuestion("");
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();   // prevents form reload
+      submit();
+    }
   };
 
   return (
@@ -17,7 +25,8 @@ export default function FollowupInput({ onAsk, loading }) {
       <input
         placeholder="Ask something more about this..."
         value={question}
-        onChange={e => setQuestion(e.target.value)}
+        onChange={(e) => setQuestion(e.target.value)}
+        onKeyDown={handleKeyDown}
         style={{
           width: "75%",
           padding: "10px",
@@ -31,7 +40,8 @@ export default function FollowupInput({ onAsk, loading }) {
         disabled={loading}
         style={{
           marginLeft: 10,
-          padding: "10px 16px"
+          padding: "10px 16px",
+          cursor: loading ? "not-allowed" : "pointer"
         }}
       >
         {loading ? "..." : "Ask"}
