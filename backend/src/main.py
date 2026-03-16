@@ -21,12 +21,12 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 
 app.include_router(analyze.router)
-app.include_router(followup_router, prefix="/api")
+app.include_router(followup_router)
 app.include_router(news_router)
 app.include_router(images_router)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # Later restrict
+    allow_origins=["http://localhost:5173","https://the2ss-35zj.vercel.app"],  # Later restrict
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
