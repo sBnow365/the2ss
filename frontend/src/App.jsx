@@ -175,7 +175,7 @@
 // export default App;
 import { useState } from "react";
 import axios from "axios";
-
+import { API_BASE } from "./config/env";
 import LocationButton from "./components/LocationButton";
 import SimpleMarkdown from "./components/SimpleMarkdown";
 import TabFollowupPanel from "./features/TabFollowupPanel";
@@ -222,7 +222,7 @@ function App() {
     try {
 
       const res = await axios.post(
-        "http://127.0.0.1:8000/analyze",
+        `${API_BASE}/analyze`,
         formData
       );
 

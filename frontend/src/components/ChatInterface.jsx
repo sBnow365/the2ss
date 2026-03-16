@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
-
+import { API_BASE } from "../config/env";
 export default function ChatInterface() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
@@ -23,7 +23,7 @@ export default function ChatInterface() {
     setMessages(prev => [...prev, userMessage]);
     setInput("");
 
-    const res = await fetch("http://127.0.0.1:8000/ask", {
+    const res = await fetch(`${API_BASE}/ask`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

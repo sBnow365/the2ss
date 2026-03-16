@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
-
+import { API_BASE } from "../config/env";
 export default function FollowupChat({ sessionId, tab }) {
 
   const [messages, setMessages] = useState([]);
@@ -24,7 +24,7 @@ export default function FollowupChat({ sessionId, tab }) {
 
     setMessages(prev => [...prev, userMessage]);
 
-    const res = await fetch("http://127.0.0.1:8000/api/followup", {
+    const res = await fetch(`${API_BASE}/followup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

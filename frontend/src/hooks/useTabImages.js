@@ -1,6 +1,7 @@
 // src/hooks/useTabImages.js
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { API_BASE } from "../config/env";
 
 /**
  * Fetches contextual images for a tab after main analysis completes.
@@ -25,7 +26,7 @@ export function useTabImages({ tab, placeContext, tabContent, enabled }) {
       setLoading(true);
       setError(null);
       try {
-                const res = await axios.post("http://127.0.0.1:8000/images", {
+                const res = await axios.post(`${API_BASE}/images`, {
         tab,
         place_context: typeof placeContext === "string" 
             ? placeContext 

@@ -1,6 +1,8 @@
 console.log("NewsTab mounted");
 import { useEffect, useState } from "react";
 import "./NewsTab.css";
+import { API_BASE } from "../config/env";
+
 
 function NewsTab({ placeContext }) {
   const [articles, setArticles] = useState([]);
@@ -8,7 +10,7 @@ function NewsTab({ placeContext }) {
   useEffect(() => {
     if (!placeContext) return;
     console.log("Running useEffect", placeContext);
-    fetch("http://localhost:8000/news", {
+    fetch(`${API_BASE}/news`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

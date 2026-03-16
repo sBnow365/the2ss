@@ -1,23 +1,34 @@
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
-
+console.log("API_BASE =", API_BASE);
+// -------- ANALYZE IMAGE --------
 export async function analyzeImage(imageFile, location) {
+
   const formData = new FormData();
 
-  formData.append("image", imageFile);
-  if (location) formData.append("location", location);
+  // Backend expects field name "file"
+  formData.append("file", imageFile);
+
+  // Backend expects lat and lon
+  if (location) {
+    formData.append("lat", location.lat);
+    formData.append("lon", location.lon);
+  }
 
   const res = await fetch(`${API_BASE}/analyze`, {
     method: "POST",
     body: formData
   });
 
-  if (!res.ok) throw new Error("Analyze failed");
+  if (!res.ok) {
+    throw new Error("Analyze failed");
+  }
 
   return res.json();
 }
 
 
+// -------- FOLLOWUP QUESTION --------
 export async function askFollowup(sessionId, tab, question, history) {
 
   const res = await fetch(`${API_BASE}/followup`, {
@@ -27,13 +38,15 @@ export async function askFollowup(sessionId, tab, question, history) {
     },
     body: JSON.stringify({
       session_id: sessionId,
-      tab,
-      question,
-      history
+      tab: tab,
+      question: question,
+      history: history
     })
   });
 
-  if (!res.ok) throw new Error("Followup failed");
+  if (!res.ok) {
+    throw new Error("Followup failed");
+  }
 
   return res.json();
 }
